@@ -30,13 +30,18 @@ h1{margin:0;font-size:clamp(30px,7vw,52px);font-weight:900;letter-spacing:.5px}
 .big:hover{transform:translateY(-2px)}
 .big:active{transform:translateY(5px);box-shadow:0 2px 0 #c99a00}
 .chip{display:inline-flex;align-items:center;gap:6px;background:#ffffff1f;border-radius:16px;padding:7px 14px;font-weight:900;font-size:18px}
+.gear{position:absolute;top:14px;right:14px;font:inherit;font-weight:900;font-size:22px;color:#fff;background:#ffffff26;border:0;border-radius:15px;height:46px;width:46px;cursor:pointer;line-height:1}
+.gear:hover{background:#ffffff40}
 /* levels */
 #lv{justify-content:flex-start;padding-top:18px}
-.lvh{width:min(760px,100%);display:flex;align-items:center;gap:12px}
+.lvh{width:min(760px,100%);display:flex;align-items:center;gap:12px;flex:0 0 auto}
 .lvh h2{margin:0;flex:1;text-align:left;font-size:28px;font-weight:900}
 .rnd{font:inherit;font-weight:900;font-size:20px;color:#fff;background:#ffffff26;border:0;border-radius:15px;height:44px;min-width:44px;padding:0 14px;cursor:pointer}
 .rnd:hover{background:#ffffff40}
-#grid{width:min(760px,100%);display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;overflow:auto;padding:6px 2px 20px}
+#grid{width:min(760px,100%);display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;overflow:auto;padding:6px 2px 30px;flex:1 1 auto;min-height:0}
+.sec{grid-column:1/-1;font-size:clamp(18px,4vw,22px);font-weight:900;text-align:left;color:var(--yellow);letter-spacing:.3px;margin-top:16px;border-bottom:2px solid #ffd93d33;padding-bottom:6px}
+.sec:first-child{margin-top:0}
+.gsec{grid-column:1/-1;font-size:14px;font-weight:800;text-align:left;color:var(--mut);margin-top:6px;margin-bottom:-4px;letter-spacing:.2px}
 .lc{font:inherit;color:#fff;border:0;border-radius:22px;padding:16px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 6px 0 #0004;transition:transform .12s}
 .lc:hover{transform:translateY(-3px)}
 .lc b{font-size:38px;line-height:1;font-weight:900}
@@ -44,6 +49,7 @@ h1{margin:0;font-size:clamp(30px,7vw,52px);font-weight:900;letter-spacing:.5px}
 .lc .bt{font-size:18px;letter-spacing:2px}
 .lc.lock{background:#2E644C!important;color:var(--ink);cursor:default}
 .lc.lock:hover{transform:none}
+.lc.fin{background:linear-gradient(160deg,#ffd93d,#ff9a1f)!important;color:#3a2600}
 /* game */
 #game{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg1)}
 #stage{flex:1 1 auto;position:relative;min-height:0;overflow:hidden}
@@ -66,7 +72,7 @@ h1{margin:0;font-size:clamp(30px,7vw,52px);font-weight:900;letter-spacing:.5px}
  box-shadow:0 5px 0 rgba(0,0,0,.28);border:3px solid rgba(255,255,255,.35);transition:box-shadow .15s,filter .15s}
 .blk svg{width:30px;height:30px}
 .blk span{font-size:11px;font-weight:900;letter-spacing:.2px}
-.blk.fwd{background:var(--green)}.blk.left{background:#1fa39a}.blk.right{background:#6aa817}.blk.jump{background:var(--orange)}.blk.back{background:#3b9ae0}.blk.uturn{background:#e8618c}.blk.rep{background:#f2c230;color:#3a2600}
+.blk.fwd{background:var(--green)}.blk.left{background:#1fa39a}.blk.right{background:#6aa817}.blk.jump{background:var(--orange)}.blk.back{background:#3b9ae0}.blk.uturn{background:#e8618c}.blk.rep{background:#f2c230;color:#3a2600}.blk.if{background:var(--violet)}
 .pal .blk:hover{filter:brightness(1.1);transform:translateY(-3px)}
 .blk.on{outline:4px solid var(--yellow);outline-offset:2px;transform:translateY(-6px) scale(1.08);box-shadow:0 12px 0 rgba(0,0,0,.3)}
 .blk.ghost{position:fixed;z-index:200;pointer-events:none;transform:translate(-50%,-60%) rotate(-5deg) scale(1.15);box-shadow:0 18px 30px #0007;cursor:grabbing;opacity:.96}
@@ -86,7 +92,54 @@ body.drag,body.drag *{cursor:grabbing!important}
 .card p{margin:0 0 16px;color:var(--mut);font-weight:800}
 .card .bats{font-size:34px;letter-spacing:6px;margin-bottom:8px}
 .card .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-@media(max-width:560px){.blk,.empty,.gap{width:52px;height:64px}.blk svg{width:26px;height:26px}.btn{height:46px;padding:0 14px;font-size:14px}.btn.go{padding:0 18px}.track{min-height:84px}}
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:#0009;opacity:0;pointer-events:none;transition:opacity .25s;padding:14px}
+.modal.show{opacity:1;pointer-events:auto}
+.modal .card{transform:scale(.9)}
+.modal.show .card{transform:scale(1)}
+.modal input{font:inherit;font-weight:800;font-size:18px;padding:12px 14px;border-radius:14px;border:2px solid #ffffff44;background:#ffffff1a;color:#fff;text-align:center;width:100%;margin-bottom:14px;outline:none;transition:border-color .2s}
+.modal input::placeholder{color:#ffffff88}
+.modal input:focus{border-color:var(--yellow)}
+.sbtn{display:flex;flex-direction:column;gap:10px;width:100%}
+.sbtn .btn{width:100%}
+.btn.danger{background:#e0426a;color:#fff}
+.modal textarea{font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;width:100%;height:min(44vh,320px);border-radius:14px;border:2px solid #ffffff33;background:#00000052;color:#dff7e8;padding:10px;resize:vertical;outline:none;white-space:pre;overflow:auto;user-select:text;-webkit-user-select:text}
+.modal textarea:focus{border-color:var(--yellow)}
+.warn{color:#ffd07a;font-size:12px;font-weight:800;text-align:left;margin:6px 0 10px;max-height:80px;overflow:auto}
+/* editor */
+#ed{justify-content:flex-start;padding:14px 14px calc(22px + env(safe-area-inset-bottom,0px));gap:12px;overflow-y:auto;overflow-x:hidden}
+.edbar{width:min(940px,100%);display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:0 0 auto}
+.edbar h2{margin:0;flex:1;text-align:left;font-size:clamp(17px,4.2vw,24px);font-weight:900;white-space:nowrap}
+.edbar .btn{height:44px;font-size:14px;padding:0 14px}
+.edwrap{width:min(940px,100%);display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.edleft{flex:1 1 360px;min-width:250px;display:flex;flex-direction:column;gap:8px}
+#edcv{width:100%;overflow:auto;background:#05271a;border-radius:16px;padding:6px;border:2px solid #ffffff1a}
+#edc{display:block;touch-action:none;cursor:crosshair}
+.edside{flex:0 0 252px;display:flex;flex-direction:column;gap:10px;text-align:left;min-width:215px}
+.edfld{display:flex;flex-direction:column;gap:4px}
+.edfld>label{font-size:11px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+.edfld input[type=text],.edfld input[type=number],.edfld select{font:inherit;font-weight:700;font-size:14px;padding:8px 10px;border-radius:11px;border:2px solid #ffffff33;background:#ffffff14;color:#fff;outline:none;width:100%}
+.edfld input:focus,.edfld select:focus{border-color:var(--yellow)}
+.edfld select option{background:#0c3524;color:#fff}
+.edrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mini{font:inherit;font-weight:900;font-size:15px;width:34px;height:34px;border-radius:10px;border:0;background:#ffffff26;color:#fff;cursor:pointer}
+.mini:hover{background:#ffffff40}
+.mini.on{background:var(--yellow);color:#2a1b00}
+.tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tool{font:inherit;font-weight:800;font-size:12px;padding:7px 9px;border-radius:11px;border:2px solid #ffffff2e;background:#ffffff12;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px}
+.tool:hover{background:#ffffff24}
+.tool.on{border-color:var(--yellow);background:#ffd93d2e}
+.tool i{width:13px;height:13px;border-radius:4px;display:block;border:1px solid #0006}
+.tool.view{border-color:#3d8bff;background:#3d8bff2e;color:#cfe3ff}
+.tool.view:hover{background:#3d8bff4d}
+#edCmds{display:flex;flex-wrap:wrap;gap:6px}
+.chk{display:inline-flex;align-items:center;gap:5px;background:#ffffff14;border:2px solid #ffffff2e;border-radius:11px;padding:5px 8px;font-size:12px;font-weight:800;cursor:pointer}
+.chk input{accent-color:#2fd06f;margin:0}
+.chk.on{border-color:var(--green);background:#2fd06f26}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:#0d3c28;border:2px solid #ffffff2e;color:#fff;font-weight:800;font-size:14px;padding:12px 18px;border-radius:16px;z-index:300;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center;box-shadow:0 10px 30px #0006}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:560px){.blk,.empty,.gap{width:52px;height:64px}.blk svg{width:26px;height:26px}.btn{height:46px;padding:0 14px;font-size:14px}.btn.go{padding:0 18px}.track{min-height:84px}.lc b{font-size:30px}.lc span{font-size:12px}
+.edside{flex:1 1 100%}.edleft{flex:1 1 100%}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -99,9 +152,10 @@ body.drag,body.drag *{cursor:grabbing!important}
 </section>
 
 <section id="menu" class="scr hide">
+  <button class="gear" id="setBtn" aria-label="Настройки">⚙</button>
   <img id="mlogo" src="logo.svg" alt="">
   <h1>Цифровой лагерь : Робоквест</h1>
-  <p class="sub">Помоги роботу "Аделику" пройти все уровни <br> Собирай батарейки — они открывают новые уровни!</p>
+  <p class="sub">Помоги роботу «Аделику» пройти 30 уровней и добраться домой<br>Собирай батарейки — они открывают новые уровни!</p>
   <button class="big" id="play">Играть</button>
   <div class="chip">🔋 <span id="mb">0</span></div>
 </section>
@@ -111,8 +165,67 @@ body.drag,body.drag *{cursor:grabbing!important}
     <button class="rnd" id="lvBack" aria-label="Назад">←</button>
     <h2>Уровни</h2>
     <div class="chip">🔋 <span id="lb2">0</span></div>
+    <button class="rnd" id="setBtn2" aria-label="Настройки">⚙</button>
   </div>
   <div id="grid"></div>
+</section>
+
+<!-- ===== РЕДАКТОР УРОВНЕЙ ===== -->
+<section id="ed" class="scr hide">
+  <div class="edbar">
+    <button class="rnd" id="edBack" aria-label="Назад">←</button>
+    <h2>🛠 Редактор уровней</h2>
+    <button class="rnd" id="edPrev" aria-label="Предыдущий">◀</button>
+    <span class="chip" id="edIdx">1 / 31</span>
+    <button class="rnd" id="edNext" aria-label="Следующий">▶</button>
+  </div>
+  <div class="edbar">
+    <button class="btn" id="edAdd">＋ Уровень</button>
+    <button class="btn" id="edDup">⧉ Копия</button>
+    <button class="btn danger" id="edDel">🗑 Удалить</button>
+    <span class="sp"></span>
+    <button class="btn" id="edRevert">↩ Сброс</button>
+    <button class="btn" id="edImport">📥 Импорт</button>
+    <button class="btn" id="edExport">📤 Экспорт</button>
+    <button class="btn" id="edTest">▶ Тест</button>
+    <button class="btn go" id="edApply">✓ Применить</button>
+  </div>
+  <div class="edwrap">
+    <div class="edleft">
+      <div class="tools" id="edTools"></div>
+      <div id="edcv"><canvas id="edc"></canvas></div>
+      <div class="edrow" style="font-size:12px;color:var(--mut);font-weight:800">
+        Зажми и веди мышью/пальцем, чтобы рисовать · клик по «Старту» меняет направление
+      </div>
+    </div>
+    <div class="edside">
+      <div class="edfld"><label>Название</label><input id="edName" type="text" maxlength="48"></div>
+      <div class="edfld"><label>Подсказка</label><input id="edHint" type="text" maxlength="140"></div>
+      <div class="edfld"><label>Раздел (группа)</label><select id="edGroup"></select></div>
+      <div class="edfld"><label>Размер сетки</label>
+        <div class="edrow">
+          <span style="font-size:12px;font-weight:800">Ш</span>
+          <button class="mini" data-wh="w-1">−</button><b id="edW">10</b><button class="mini" data-wh="w1">＋</button>
+          <span style="font-size:12px;font-weight:800;margin-left:6px">В</span>
+          <button class="mini" data-wh="h-1">−</button><b id="edH">8</b><button class="mini" data-wh="h1">＋</button>
+        </div>
+      </div>
+      <div class="edfld"><label>Старт (X=<span id="edSX">1</span>, Y=<span id="edSY">1</span>)</label>
+        <div class="edrow">
+          <button class="mini" id="edD0" title="Вправо">→</button>
+          <button class="mini" id="edD1" title="Вниз">↓</button>
+          <button class="mini" id="edD2" title="Влево">←</button>
+          <button class="mini" id="edD3" title="Вверх">↑</button>
+        </div>
+      </div>
+      <div class="edfld"><label>Команды в палитре</label><div id="edCmds"></div></div>
+      <div class="edrow">
+        <div class="edfld" style="flex:1 1 100px"><label>Слотов</label><input id="edMax" type="number" min="1" max="60"></div>
+        <div class="edfld" style="flex:1 1 100px"><label>🔋 для открытия</label><input id="edNeed" type="number" min="0" max="999"></div>
+      </div>
+      <button class="btn" id="edGroups" style="height:44px;font-size:14px">✎ Названия разделов</button>
+    </div>
+  </div>
 </section>
 
 <div id="game" class="hide">
@@ -141,6 +254,68 @@ body.drag,body.drag *{cursor:grabbing!important}
   <div class="btns"><button class="btn" id="wM">К уровням</button><button class="btn" id="wR">Ещё раз</button><button class="btn go" id="wN">Дальше ▶</button></div>
 </div></div>
 
+<!-- Настройки -->
+<div id="set" class="modal"><div class="card">
+  <h3>⚙ Настройки</h3>
+  <p id="sMsg">Управление прогрессом</p>
+  <div class="sbtn">
+    <button class="btn" id="sEditor">🛠 Редактор уровней (админ)</button>
+    <button class="btn danger" id="sReset">🔄 Сбросить весь прогресс</button>
+    <button class="btn" id="sUnlock">🔓 Открыть все уровни</button>
+    <button class="btn go" id="sClose">Закрыть</button>
+  </div>
+</div></div>
+
+<!-- Пароль -->
+<div id="pw" class="modal"><div class="card">
+  <h3 id="pwT">🔐 Пароль</h3>
+  <p id="pwP">Введите пароль для открытия всех уровней</p>
+  <input id="pwIn" type="password" placeholder="пароль" autocomplete="off" spellcheck="false">
+  <div class="btns">
+    <button class="btn" id="pwCancel">Отмена</button>
+    <button class="btn go" id="pwOk">Открыть</button>
+  </div>
+</div></div>
+
+<!-- Экспорт -->
+<div id="exp" class="modal"><div class="card" style="max-width:min(94vw,760px);width:100%">
+  <h3>📤 Экспорт уровней</h3>
+  <p id="expMsg">Скопируй код и замени им блоки CHAPTERS / GROUPS / NEED / LEVELS в test.html</p>
+  <div class="btns" style="margin-bottom:10px">
+    <button class="btn" id="expModeJs">Код для файла</button>
+    <button class="btn" id="expModeJson">JSON</button>
+  </div>
+  <div class="warn" id="expWarn"></div>
+  <textarea id="expTa" readonly spellcheck="false"></textarea>
+  <div class="btns" style="margin-top:12px">
+    <button class="btn" id="expCopy">📋 Копировать</button>
+    <button class="btn" id="expDl">💾 Скачать</button>
+    <button class="btn go" id="expClose">Закрыть</button>
+  </div>
+</div></div>
+
+<!-- Импорт -->
+<div id="imp" class="modal"><div class="card" style="max-width:min(94vw,760px);width:100%">
+  <h3>📥 Импорт уровней</h3>
+  <p>Вставь JSON, полученный кнопкой «JSON» в окне экспорта</p>
+  <textarea id="impTa" placeholder="Вставь JSON сюда..." spellcheck="false"></textarea>
+  <div class="btns" style="margin-top:12px">
+    <button class="btn" id="impCancel">Отмена</button>
+    <button class="btn go" id="impOk">Загрузить</button>
+  </div>
+</div></div>
+
+<!-- Названия разделов -->
+<div id="grp" class="modal"><div class="card" style="max-width:min(94vw,520px);width:100%">
+  <h3>✎ Названия разделов</h3>
+  <p>Каждая строка — один раздел (группа уровней)</p>
+  <textarea id="grpTa" style="height:min(34vh,240px)" spellcheck="false"></textarea>
+  <div class="btns" style="margin-top:12px">
+    <button class="btn" id="grpCancel">Отмена</button>
+    <button class="btn go" id="grpOk">Сохранить</button>
+  </div>
+</div></div>
+
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -163,37 +338,122 @@ const ICONS={
  back:S+'<path d="M12 4v15"/><path d="M6 13.500 12 19l6-5.500"/></svg>',
  uturn:S+'<path d="M7 20V9a5 5 0 0 1 10 0v3"/><path d="M13 9l4 4 4-4"/></svg>',
  rep:S+'<path d="M17 3l3 3-3 3"/><path d="M4 11V9a3 3 0 0 1 3-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 13v2a3 3 0 0 1-3 3H4"/></svg>',
+ if:S+'<path d="M12 21v-9"/><path d="M12 12 5 5"/><path d="M12 12l7-7"/><circle cx="12" cy="12" r="2.4"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/></svg>',
  jump:S+'<path d="M12 14V4"/><path d="M7 8.500 12 4l5 4.500"/><path d="M4 20q8 -5 16 0" stroke-dasharray="3 3.500"/></svg>'};
-const LBL={fwd:'Вперёд',left:'Налево',right:'Направо',jump:'Прыжок',back:'Назад',uturn:'Разворот',rep:'Повтор ×3'};
+const LBL={fwd:'Вперёд',left:'Налево',right:'Направо',jump:'Прыжок',back:'Назад',uturn:'Разворот',rep:'Повтор ×3',if:'Развилка'};
 const TC=['#8be8a4','#b6ee7d','#63d99a','#d2f5a8','#4fcf8e'];
 const INK='#0b3324';
 function shade(h,f){const n=parseInt(h.slice(1),16);return'rgb('+[n>>16,n>>8&255,n&255].map(v=>Math.round(v*f)).join(',')+')'}
 
-/* ---------- уровни: # плитка, G цель, B плитка с батарейкой, . пусто ---------- */
-const BASE=['fwd','left','right','jump'],B1=[...BASE,'back'],B2=[...B1,'uturn'],B3=[...B2,'rep'];
-let useList=BASE;
-const LEVELS=[
- {name:'Первый шаг',hint:'Дойди до белой плитки с целью',tiles:['......','.#B##.','.#G.#.','.###..','......','......'],start:[1,1,0],max:6},
- {name:'Прыжок',hint:'Прыжок перелетает через яму',tiles:['........','.#B###..','.##.##..','.B.G.#..','.##.##..','.#####..','........','........'],start:[1,1,0],max:10},
- {name:'Разворот',hint:'Две цели — зажги обе',tiles:['........','.#####..','.B...#..','.B.#.#..','.#GBG#..','.#####..','........','........'],start:[1,1,1],max:10},
- {name:'Прыжки',hint:'Комбинируй прыжки и повороты',tiles:['.........','.#B#####.','.##...##.','.#.B.#.#.','.#.G.G.#.','.#.#.#.#.','.##...##.','.#######.','.........'],start:[1,1,0],max:9},
- {name:'Симметрия',hint:'Финальное испытание',tiles:['.........','.#######.','.B..#..#.','.#.##.##.','.#GB.#G#.','.#.##.##.','.#..#..#.','.#######.','.........'],start:[1,1,1],max:12},
- {name:'Шаг назад',hint:'Новая плитка: «Назад» — шаг без поворота',use:B1,tiles:['........','........','.B###BG.','........'],start:[3,2,0],max:8},
- {name:'Портал',hint:'Шагни на портал — окажешься у второго!',use:B1,tiles:['.........','.#BP.....','.........','......P#.','.......B.','.......G.'],start:[1,1,0],max:8},
- {name:'Туда-сюда',hint:'Новая плитка: «Разворот» на 180°',use:B2,tiles:['.......','...B...','.G###B.','.......'],start:[3,2,0],max:13},
- {name:'Космопорт',hint:'Портал, яма и прыжок',use:B2,tiles:['.........','.#B#P#...','.........','.........','..PBB.G..'],start:[1,1,0],max:8},
- {name:'Повторюшка',hint:'Новая плитка: «Повтор ×3» — следующая команда три раза',use:B3,tiles:['.........','.#B#####.','.......#.','.......B.','.......G.'],start:[1,1,0],max:7},
- {name:'Волшебный путь',hint:'Портал, повороты и прыжок',use:B3,tiles:['.........','.#BP.....','.........','.....P#B.','.......#.','....G.#B.','.........'],start:[1,1,0],max:11},
- {name:'Финал: Змейка',hint:'Используй все плитки, робот-мастер!',use:B3,tiles:['.........','.#B#.#B..','......#..','...#.B#..','...#.....','...G.....','.........'],start:[1,1,0],max:14}
+/* ---------- структура разделов ---------- */
+let GROUPS=[
+ {t:'Уровни 1–5. Робот и алгоритм',n:5},
+ {t:'Уровни 6–10. Циклические алгоритмы',n:5},
+ {t:'Уровни 11–15. Алгоритм развилка',n:5},
+ {t:'Уровни 16–20. Технология телепорта',n:5},
+ {t:'Уровни 21–25. Один шаг назад, два вперёд!',n:5},
+ {t:'Уровни 26–30. Провода и рычаги',n:5},
+ {t:'Уровень 31. Дом, милый дом',n:1}
 ];
-const NEED=[0,1,2,4,6,7,9,11,13,16,18,20];
+let CHAPTERS=[
+ {t:'Раздел 1. История о роботе',g:[0,1,2]},
+ {t:'Раздел 2. Новое приключение',g:[3,4,5]},
+ {t:'Раздел 3. Дорога домой',g:[6]}
+];
+
+/* ---------- уровни ---------- */
+const L_BASIC=['fwd','left','right'];
+const L_BJ=['fwd','left','right','jump'];
+const L_REP=['fwd','left','right','rep'];
+const L_IF=['fwd','left','right','if'];
+const L_RIF=['fwd','left','right','rep','if'];
+const L_BACK=['fwd','back','left','right'];
+const L_BACK2=['fwd','back','left','right','rep'];
+const L_LEV=['fwd','left','right','rep'];
+
+let LEVELS=[
+/* ===== Раздел 1 ===== */
+{name:'Первый шаг',g:0,hint:'Дойди до белой плитки с целью',use:L_BASIC,
+ tiles:['......','.#B##.','.#G.#.','.###..','......','......'],start:[1,1,0],max:6},
+{name:'Поворот',g:0,hint:'Поверни направо — и цель рядом',use:L_BASIC,
+ tiles:['.......','.##B...','...#...','...G...','.......'],start:[1,1,0],max:7},
+{name:'Два поворота',g:0,hint:'Сначала направо, потом налево',use:L_BASIC,
+ tiles:['........','.#B#....','...#....','...##G..','........'],start:[1,1,0],max:9},
+{name:'Прыжок через яму',g:0,hint:'«Прыжок» переносит через пустую клетку',use:L_BJ,
+ tiles:['........','.#.#B...','....#...','....G...','........'],start:[1,1,0],max:8},
+{name:'Комбинируй',g:0,hint:'Прыжок, поворот — и ты у цели',use:L_BJ,
+ tiles:['........','.#.#....','...#....','...B....','...#G...','........'],start:[1,1,0],max:9},
+
+{name:'Повторюшка',g:1,hint:'«Повтор ×3» выполняет следующую команду три раза',use:L_REP,
+ tiles:['........','.######.','.#B##G#.','.######.','........'],start:[1,2,0],max:5},
+{name:'Ступеньки',g:1,hint:'Два повтора — и робот у цели',use:L_REP,
+ tiles:['........','.#B##...','....#...','....#...','....#...','....G...','........'],start:[1,1,0],max:8},
+{name:'Зигзаг',g:1,hint:'Циклы экономят место в программе',use:L_REP,
+ tiles:['.......','.##B##.','.....#.','.#G###.','.......'],start:[1,1,0],max:12},
+{name:'Длинный коридор',g:1,hint:'Собери обе батарейки по пути',use:L_REP,
+ tiles:['...........','.########.','.#B####B#G.','.########.','...........'],start:[1,2,0],max:8},
+{name:'Круговорот',g:1,hint:'Обойди комнату — повтор поможет',use:L_REP,
+ tiles:['........','.#####..','.#...#..','.#.#.B..','.G.#.#..','.#...#..','.#####..','........'],start:[1,1,0],max:17},
+
+{name:'Развилка',g:2,hint:'«Развилка»: если впереди стена — направо, иначе — шаг вперёд',use:L_IF,
+ tiles:['........','.#B#....','...#....','...G....','........'],start:[1,1,0],max:6},
+{name:'Развилка-2',g:2,hint:'Повтор и развилка работают вместе',use:L_RIF,
+ tiles:['........','.#B##...','....#...','....#...','....G...','........'],start:[1,1,0],max:9},
+{name:'Поворот за поворотом',g:2,hint:'Как только впереди стена — сразу направо',use:L_RIF,
+ tiles:['......','.#B##.','....#.','.G###.','......'],start:[1,1,0],max:10},
+{name:'Спираль',g:2,hint:'Спираль закручивается вправо',use:L_RIF,
+ tiles:['.......','.##B##.','.....#.','..##G..','..#B##.','.......'],start:[1,1,0],max:18},
+{name:'Большая спираль',g:2,hint:'Финальная спираль раздела',use:L_RIF,
+ tiles:['........','.##B###.','......#.','..##G.#.','..#...#.','..B...#.','..#####.','........'],start:[1,1,0],max:22},
+
+/* ===== Раздел 2 ===== */
+{name:'Портал',g:3,hint:'Наступи на портал — и окажешься у второго',use:L_BASIC,
+ tiles:['.........','.####....','.#BP#....','.####....','.........','.....P...','.....#...','.....G...','.........'],start:[1,2,0],max:8},
+{name:'Прыжок в портал',g:3,hint:'Сначала прыжок, потом портал',use:['fwd','left','right','jump','rep'],
+ tiles:['..........','.#.#B#P...','..........','..........','.....P#...','......#...','......G...','..........'],start:[1,1,0],max:11},
+{name:'Портал и поворот',g:3,hint:'После телепорта поверни направо',use:L_REP,
+ tiles:['..........','.#B##P....','..........','..........','.....P....','.....#....','.....#....','.....G....','..........'],start:[1,1,0],max:10},
+{name:'Портал-лабиринт',g:3,hint:'Найди путь через портал',use:L_REP,
+ tiles:['..........','.#B#P.....','..........','..........','...P#.....','....#.....','....G.....','..........'],start:[1,1,0],max:10},
+{name:'Дальний портал',g:3,hint:'Длинный путь до портала',use:L_REP,
+ tiles:['..........','.#B###P...','..........','..........','.....P#...','......#...','......#...','......G...','..........'],start:[1,1,0],max:10},
+
+{name:'Шаг назад',g:4,hint:'«Назад» — шаг в обратную сторону без поворота',use:L_BACK,
+ tiles:['........','.#G#B##.','........'],start:[5,1,0],max:8},
+{name:'Задний ход',g:4,hint:'Сначала вперёд за батарейкой, потом назад',use:L_BACK,
+ tiles:['........','.###B...','...#....','...#....','...G....','........'],start:[1,1,0],max:11},
+{name:'Назад и в яму',g:4,hint:'Прыжок и задний ход',use:['fwd','back','left','right','jump'],
+ tiles:['........','.#.#B...','...#....','...#....','...G....','........'],start:[1,1,0],max:11},
+{name:'Туда и обратно',g:4,hint:'Собери батарейку и вернись',use:L_BACK2,
+ tiles:['..........','.###B##G..','...#......','...#......','...#......','..........'],start:[1,1,0],max:12},
+{name:'Лабиринт назад',g:4,hint:'Используй все возможности',use:['fwd','back','left','right','jump','rep'],
+ tiles:['...........','.#.#B#G#...','...#.......','...#.......','...#.......','...........'],start:[1,1,0],max:14},
+
+{name:'Рычаг',g:5,hint:'«Рычаг» на плитке открывает все двери',use:L_LEV,
+ tiles:['..........','.#B#L#D...','......#...','......#...','......G...','..........'],start:[1,1,0],max:12},
+{name:'Провода',g:5,hint:'Дверь открывается рычагом',use:L_LEV,
+ tiles:['...........','.#B#L#D#...','.......#...','.......#...','.......#...','.......G...','...........'],start:[1,1,0],max:11},
+{name:'Две двери',g:5,hint:'Один рычаг открывает все двери',use:L_LEV,
+ tiles:['...........','.#B#L#D#...','.......#...','.......D...','.......#...','.......G...','...........'],start:[1,1,0],max:12},
+{name:'Рычаг и яма',g:5,hint:'Прыжок, рычаг, дверь',use:['fwd','left','right','jump','rep'],
+ tiles:['...........','.#.#B#L#...','.......#...','.......#...','.......D...','.......#...','.......G...','...........'],start:[1,1,0],max:14},
+{name:'Электрическая цепь',g:5,hint:'Собери схему до конца',use:['fwd','left','right','jump','rep'],
+ tiles:['............','.#.#B#L#D#..','.........#..','.........#..','.........D..','.........#..','.........#..','.........G..','............'],start:[1,1,0],max:16},
+
+/* ===== Раздел 3 ===== */
+{name:'Дом, милый дом',g:6,hint:'Последний путь робота. Ты справишься!',use:['fwd','left','right','jump','rep'],
+ tiles:['............','.#.#B#L#D#..','.........#..','.........#..','.........#..','.........#..','.........G..','............'],start:[1,1,0],max:16}
+];
+LEVELS.forEach((L,i)=>{ if(!Array.isArray(L.use)) console.warn('Level '+(i+1)+' ("'+L.name+'") has no `use` — palette will default to basic.'); });
+
+let NEED=[0,0,1,2,3,4,4,5,6,7,8,9,9,10,12,13,14,15,15,16,17,18,18,19,20,21,21,22,24,24,25,26];
 const nBat=i=>LEVELS[i].tiles.join('').split('B').length-1;
-const unlocked=i=>total()>=NEED[i];
+const unlocked=i=>save.all||total()>=NEED[i];
 const LCOL=['#2fb85f','#1fa39a','#6aa817','#1f9d6b','#3c9e4a','#2bb673','#159a80','#5aa62a','#22a06b','#4caf50','#1f8f6a','#7cb518'];
 
 /* ---------- экраны ---------- */
 function show(n){
- ['menu','lv','game'].forEach(k=>$(k).classList.toggle('hide',k!==n));
+ ['menu','lv','game','ed'].forEach(k=>$(k).classList.toggle('hide',k!==n));
  if(n==='game')requestAnimationFrame(resize);
  if(n==='menu')$('mb').textContent=total();
  if(n==='lv')buildLevels();
@@ -201,15 +461,30 @@ function show(n){
 function buildLevels(){
  $('lb2').textContent=total();
  const g=$('grid');g.innerHTML='';
- LEVELS.forEach((L,i)=>{
-  const ok=unlocked(i),b=document.createElement('button');
-  b.className='lc'+(ok?'':' lock');
-  if(ok)b.style.background=LCOL[i];
-  const got=save.b[i]||0,n=nBat(i);
-  b.innerHTML=ok?'<b>'+(i+1)+'</b><span>'+L.name+'</span><div class="bt">'+'🔋'.repeat(got)+'<span style="opacity:.35">'+'🔋'.repeat(n-got)+'</span></div>'
-   :'<b>🔒</b><span>'+L.name+'</span><div>нужно 🔋 '+NEED[i]+'</div>';
-  if(ok)b.onclick=()=>{show('game');loadLevel(i)};
-  g.appendChild(b);
+ CHAPTERS.forEach(ch=>{
+  const h=document.createElement('div');h.className='sec';h.textContent=ch.t;g.appendChild(h);
+  ch.g.forEach(gi=>{
+   const gr=GROUPS[gi];if(!gr)return;
+   const ids=[];
+   LEVELS.forEach((L,i)=>{ if(clamp(L.g|0,0,Math.max(0,GROUPS.length-1))===gi) ids.push(i); });
+   if(!ids.length)return;
+   const gh=document.createElement('div');gh.className='gsec';gh.textContent=gr.t;g.appendChild(gh);
+   ids.forEach(i=>{
+    const L=LEVELS[i],ok=unlocked(i);
+    const b=document.createElement('button');
+    b.className='lc'+(ok?'':' lock')+(i===LEVELS.length-1?' fin':'');
+    if(ok&&i!==LEVELS.length-1)b.style.background=LCOL[i%LCOL.length];
+    const n=nBat(i);
+    const got=Math.max(0,Math.min(save.b[i]||0,n));
+    const showGot=Math.max(0,got);
+    const showEmpty=Math.max(0,n-got);
+    b.innerHTML=ok
+      ?'<b>'+(i+1)+'</b><span>'+L.name+'</span><div class="bt">'+'🔋'.repeat(showGot)+'<span style="opacity:.35">'+'🔋'.repeat(showEmpty)+'</span></div>'
+      :'<b>🔒</b><span>'+L.name+'</span><div>нужно 🔋 '+NEED[i]+'</div>';
+    if(ok)b.onclick=()=>{show('game');loadLevel(i)};
+    g.appendChild(b);
+   });
+  });
  });
 }
 
@@ -217,6 +492,7 @@ function buildLevels(){
 const cv=$('c'),ctx=cv.getContext('2d'),stageEl=$('stage');
 const TW=68,TH=34,TILE_H=13,INSET=.07;
 let CW=800,CH=520,dpr=1,scale=1,W=0,H=0,grid=[],offX=0,offY=0,startPos=[1,1,0],maxSlots=8,cur=0;
+let useList=L_BASIC;
 let robot={x:1,y:1,dir:0,px:1,py:1,pdir:0,hop:0,shake:0};
 let prog=[],uid=0,running=false,runId=0,activeSlot=-1,runBat=0,T=0,lastT=0;
 const els=new Map();
@@ -238,8 +514,15 @@ function loadLevel(i){
  cur=i;const d=LEVELS[i];
  H=d.tiles.length;W=d.tiles[0].length;
  offX=((W-1)/2-(H-1)/2)*TW/2;offY=((W-1)/2+(H-1)/2)*TH/2;
- grid=d.tiles.map((row,y)=>[...row].map((ch,x)=>({type:'#BP'.includes(ch)?1:ch==='G'?2:0,bat:ch==='B',portal:ch==='P',wAt:-9,got:false,gotAt:0,lit:false,litAt:0,c:TC[(x*2+y*3)%5]})));
- startPos=d.start;maxSlots=d.max;useList=d.use||BASE;buildPal(useList);
+ grid=d.tiles.map((row,y)=>[...row].map((ch,x)=>({
+  type:ch==='.'?0:(ch==='G'?2:1),
+  bat:ch==='B',portal:ch==='P',lever:ch==='L',door:ch==='D',
+  open:false,pulled:false,openAt:-9,pullAt:-9,
+  wAt:-9,got:false,gotAt:0,lit:false,litAt:0,
+  c:TC[(x*2+y*3)%5]
+ })));
+ startPos=d.start;maxSlots=d.max;
+ useList=d.use||L_BASIC;buildPal(useList);
  prog=[];els.clear();
  stopRun();resetBoard();computeScale();
  $('hT').textContent='Уровень '+(i+1)+' · '+d.name;$('hS').textContent=d.hint;
@@ -248,24 +531,50 @@ function loadLevel(i){
 
 /* ---------- звуки ---------- */
 let AC=null;
-function sfx(k){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const M={fwd:[440,.07],back:[330,.07],left:[520,.07],right:[560,.07],uturn:[400,.12],jump:[660,.15],rep:[740,.1],bat:[988,.2],warp:[300,.3],win:[784,.5],bump:[130,.14]};
- const[f,d]=M[k]||[440,.07],o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;o.type=k==='bump'?'square':'triangle';o.frequency.setValueAtTime(f,t);
- if(k==='warp'||k==='jump'||k==='win')o.frequency.exponentialRampToValueAtTime(f*2,t+d);
- g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start();o.stop(t+d)}catch(e){}}
+function sfx(k){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const M={fwd:[440,.07],back:[330,.07],left:[520,.07],right:[560,.07],uturn:[400,.12],jump:[660,.15],rep:[740,.1],bat:[988,.2],warp:[300,.3],lever:[600,.18],win:[784,.5],bump:[130,.14]};
+ const[f,dd]=M[k]||[440,.07],o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;o.type=k==='bump'?'square':'triangle';o.frequency.setValueAtTime(f,t);
+ if(k==='warp'||k==='jump'||k==='win'||k==='lever')o.frequency.exponentialRampToValueAtTime(f*2,t+dd);
+ g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+dd);o.connect(g);g.connect(AC.destination);o.start();o.stop(t+dd)}catch(e){}}
 
 /* ---------- логика ---------- */
-const walk=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&grid[y][x].type!==0;
+const inB=(x,y)=>x>=0&&y>=0&&x<W&&y<H;
+function walk(x,y){
+ if(!inB(x,y))return false;
+ const c=grid[y][x];
+ if(c.type===0)return false;
+ if(c.door&&!c.open)return false;
+ return true;
+}
 function ahead(x,y,d,n){const k=((Math.round(d)%4)+4)%4;return[x+[1,0,-1,0][k]*n,y+[0,1,0,-1][k]*n]}
+function portalList(){const a=[];grid.forEach((r,y)=>r.forEach((c,x)=>{if(c.portal)a.push([x,y])}));return a}
+
 function arrive(x,y){
  let c=grid[y][x];
- if(c.portal){let o=null;grid.forEach((r,yy)=>r.forEach((q,xx)=>{if(q.portal&&(xx!==x||yy!==y))o=[xx,yy]}));
-  if(o){c.wAt=T;grid[o[1]][o[0]].wAt=T;x=o[0];y=o[1];robot.x=robot.px=x;robot.y=robot.py=y;c=grid[y][x];sfx('warp')}}
+ if(c.portal){
+  const list=portalList();
+  const i=list.findIndex(p=>p[0]===x&&p[1]===y);
+  if(i>=0){
+   const pi=(i%2===0)?i+1:i-1;
+   if(list[pi]){
+    const ox=list[pi][0],oy=list[pi][1];
+    c.wAt=T;grid[oy][ox].wAt=T;
+    robot.x=robot.px=ox;robot.y=robot.py=oy;
+    x=ox;y=oy;c=grid[oy][ox];
+    sfx('warp');
+   }
+  }
+ }
+ if(c.lever&&!c.pulled){
+  c.pulled=true;c.pullAt=T;
+  grid.forEach(r=>r.forEach(q=>{if(q.door&&!q.open){q.open=true;q.openAt=T}}));
+  sfx('lever');
+ }
  if(c.type===2&&!c.lit){c.lit=true;c.litAt=T}
- if(c.bat&&!c.got){c.got=true;c.gotAt=T;runBat++;sfx('bat');$('hb').textContent=total()+runBat-(save.b[cur]||0>0?0:0)}
+ if(c.bat&&!c.got){c.got=true;c.gotAt=T;runBat++;sfx('bat');$('hb').textContent=total()+runBat}
 }
 const allLit=()=>grid.every(r=>r.every(c=>c.type!==2||c.lit));
 function resetBoard(){
- grid.forEach(r=>r.forEach(c=>{c.lit=false;c.got=false}));
+ grid.forEach(r=>r.forEach(c=>{c.lit=false;c.got=false;c.open=false;c.pulled=false;c.openAt=-9;c.pullAt=-9}));
  runBat=0;
  Object.assign(robot,{x:startPos[0],y:startPos[1],dir:startPos[2],hop:0,shake:0});
  robot.px=robot.x;robot.py=robot.y;robot.pdir=robot.dir;
@@ -295,6 +604,12 @@ async function bump(id){
 }
 async function exec(cmd,id){
  if(cmd==='rep')return;
+ if(cmd==='if'){
+  const [nx,ny]=ahead(robot.x,robot.y,robot.dir,1);
+  if(walk(nx,ny)){sfx('fwd');await moveTo(nx,ny,320,3,id)}
+  else{sfx('right');await turnTo(robot.pdir+1,id)}
+  return;
+ }
  if(cmd==='fwd'||cmd==='jump'||cmd==='back'){
   const j=cmd==='jump',[nx,ny]=ahead(robot.x,robot.y,robot.dir,j?2:cmd==='back'?-1:1);
   if(walk(nx,ny)){sfx(cmd);await moveTo(nx,ny,j?480:320,j?32:3,id)}else{sfx('bump');await bump(id)}
@@ -330,9 +645,13 @@ async function onWin(){
  if(runBat>prev){save.b[cur]=runBat;persist()}
  const n=nBat(cur),last=cur>=LEVELS.length-1,nextOk=!last&&unlocked(cur+1);
  $('hb').textContent=total();
- $('wB').innerHTML='🔋'.repeat(runBat)+'<span style="opacity:.3">'+'🔋'.repeat(n-runBat)+'</span>';
- sfx('win');$('wT').textContent=last?'Все уровни пройдены!':['Уровень пройден!','Ура! Аделик доволен!','Супер-алгоритм!','Так держать!'][Math.random()*4|0];
- $('wS').textContent=last?'Ты настоящий алгоритмист!':nextOk?'Отличная работа!':'Чтобы открыть уровень '+(cur+2)+', нужно ещё 🔋 '+(NEED[cur+1]-total())+'. Собери батарейки на плитках!';
+ $('wB').innerHTML='🔋'.repeat(runBat)+'<span style="opacity:.3">'+'🔋'.repeat(Math.max(0,n-runBat))+'</span>';
+ sfx('win');
+ $('wT').textContent=last?'Все уровни пройдены!':['Уровень пройден!','Ура! Аделик доволен!','Супер-алгоритм!','Так держать!','Отличная работа!'][Math.random()*5|0];
+ $('wS').textContent=last
+  ?'Ты настоящий алгоритмист! Робот Аделик добрался до дома 🏠'
+  :(nextOk?'Отличная работа! Открыт новый уровень.'
+          :'Чтобы открыть уровень '+(cur+2)+', нужно ещё 🔋 '+(NEED[cur+1]-total())+'. Собери батарейки на плитках!');
  $('wN').classList.toggle('hide',!nextOk);
  $('win').classList.add('show');
 }
@@ -376,7 +695,8 @@ function markActive(){
 function addCmd(cmd){
  if(running||prog.length>=maxSlots)return;
  const it={id:++uid,cmd};prog.push(it);renderTrack();upd();
- els.get(it.id).animate([{transform:'scale(.4)',opacity:.2},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:280});
+ const el=els.get(it.id);
+ if(el)el.animate([{transform:'scale(.4)',opacity:.2},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:280});
 }
 function bindDrag(el,cmd,id){
  el.addEventListener('pointerdown',e=>{
@@ -428,6 +748,776 @@ $('clr').onclick=()=>{if(running)return;prog=[];renderTrack();upd()};
 $('toLv').onclick=()=>{stopRun();show('lv')};
 $('play').onclick=()=>show('lv');
 $('lvBack').onclick=()=>show('menu');
+
+/* ================================================================
+   РЕДАКТОР УРОВНЕЙ (с поддержкой 3D-изометрии)
+   ================================================================ */
+const ADMIN_PW='admin';
+const ED_KEY='robotAlgoEditor';
+const ALL_CMDS=['fwd','left','right','jump','back','uturn','rep','if'];
+
+const ED_TOOLS=[
+ {c:'.',t:'Пусто',col:'#0a3122'},
+ {c:'#',t:'Стена',col:'#5fd39a'},
+ {c:'G',t:'Цель',col:'#f2fff7'},
+ {c:'B',t:'Батарейка',col:'#ffd93d'},
+ {c:'P',t:'Портал',col:'#38c6e8'},
+ {c:'L',t:'Рычаг',col:'#e8618c'},
+ {c:'D',t:'Дверь',col:'#d1495f'},
+ {c:'S',t:'Старт',col:'#3d8bff'}
+];
+
+let ED=null,edPainting=false;
+
+function cloneLevels(){
+ return LEVELS.map(L=>({
+  name:L.name,g:L.g|0,hint:L.hint,
+  use:(L.use||['fwd']).slice(),
+  tiles:L.tiles.slice(),
+  start:L.start.slice(),
+  max:L.max
+ }));
+}
+const ORIG={levels:cloneLevels(),groups:GROUPS.map(g=>({t:g.t})),need:NEED.slice(0,LEVELS.length)};
+
+function toast(msg){
+ let t=$('toast');
+ if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t)}
+ t.textContent=msg;t.classList.add('show');
+ clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function edSave(){try{localStorage.setItem(ED_KEY,JSON.stringify(ED))}catch(e){}}
+
+function openEditor(){
+ if(!ED){
+  ED={levels:cloneLevels(),groups:ORIG.groups.map(g=>({t:g.t})),need:ORIG.need.slice(),cur:0,tool:'.',view:'iso'};
+  try{
+   const s=localStorage.getItem(ED_KEY);
+   if(s){
+    const d=JSON.parse(s);
+    if(d&&Array.isArray(d.levels)&&d.levels.length){
+     ED=d;
+     if(!ED.groups||!ED.groups.length)ED.groups=ORIG.groups.map(g=>({t:g.t}));
+     if(!Array.isArray(ED.need))ED.need=ED.levels.map(()=>0);
+     if(!ED.tool)ED.tool='.';
+     if(ED.view!=='2d'&&ED.view!=='iso')ED.view='iso';
+    }
+   }
+  }catch(e){}
+ }
+ ED.cur=clamp(ED.cur|0,0,ED.levels.length-1);
+ ED.tool=ED.tool||'.';
+ if(ED.view!=='2d'&&ED.view!=='iso')ED.view='iso';
+ show('ed');
+ requestAnimationFrame(()=>{buildEdTools();edSync()});
+}
+
+/* --- синхронизация полей --- */
+function edSync(){
+ if(!ED)return;
+ const L=ED.levels[ED.cur];
+ if(!L)return;
+ $('edIdx').textContent=(ED.cur+1)+' / '+ED.levels.length;
+ $('edName').value=L.name||'';
+ $('edHint').value=L.hint||'';
+ $('edMax').value=L.max||10;
+ $('edNeed').value=(ED.need[ED.cur]|0);
+ const sel=$('edGroup');sel.replaceChildren();
+ ED.groups.forEach((g,i)=>{
+  const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+g.t;sel.appendChild(o);
+ });
+ sel.value=clamp(L.g|0,0,ED.groups.length-1);
+ ['edD0','edD1','edD2','edD3'].forEach((id,i)=>$(id).classList.toggle('on',(L.start[2]|0)===i));
+ $('edSX').textContent=L.start[0];
+ $('edSY').textContent=L.start[1];
+ $('edW').textContent=L.tiles[0].length;
+ $('edH').textContent=L.tiles.length;
+ document.querySelectorAll('#edCmds input').forEach(cb=>{
+  const on=L.use.indexOf(cb.value)>=0;
+  cb.checked=on;
+  cb.parentNode.classList.toggle('on',on);
+ });
+ buildEdTools();
+ edResize();
+}
+
+/* --- палитра инструментов --- */
+function buildEdTools(){
+ const h=$('edTools');h.replaceChildren();
+ ED_TOOLS.forEach(t=>{
+  const b=document.createElement('button');
+  b.className='tool'+(ED.tool===t.c?' on':'');
+  b.innerHTML='<i style="background:'+t.col+'"></i>'+t.t;
+  b.onclick=()=>{ED.tool=t.c;buildEdTools()};
+  h.appendChild(b);
+ });
+ // Кнопка переключения 3D/2D
+ const v=document.createElement('button');
+ v.className='tool view';
+ v.id='edViewBtn';
+ v.textContent=ED.view==='iso'?'🔄 3D вкл':'🔄 2D вкл';
+ v.title='Переключить 3D/2D вид';
+ v.onclick=()=>{
+  ED.view = (ED.view==='iso')?'2d':'iso';
+  edSave();edSync();
+ };
+ h.appendChild(v);
+}
+
+/* --- чекбоксы команд --- */
+function buildEdCmds(){
+ const h=$('edCmds');h.replaceChildren();
+ ALL_CMDS.forEach(c=>{
+  const l=document.createElement('label');l.className='chk';
+  const inp=document.createElement('input');inp.type='checkbox';inp.value=c;
+  const sp=document.createElement('span');sp.textContent=LBL[c];
+  l.appendChild(inp);l.appendChild(sp);
+  inp.onchange=()=>{
+   const L=ED.levels[ED.cur];
+   L.use=ALL_CMDS.filter(c2=>h.querySelector('input[value="'+c2+'"]').checked);
+   if(!L.use.length)L.use=['fwd'];
+   l.classList.toggle('on',inp.checked);
+   edSave();
+  };
+  h.appendChild(l);
+ });
+}
+buildEdCmds();
+
+/* ================================================================
+   3D (изометрический) и 2D рендер в редакторе
+   ================================================================ */
+
+/* пересчёт геометрии холста и его размеров */
+function edComputeGeo(){
+ const L=ED.levels[ED.cur];
+ const Wc=L.tiles[0].length,Hc=L.tiles.length;
+ const host=$('edcv');
+ const avail=Math.max(180,(host.clientWidth||340)-16);
+
+ if(ED.view==='2d'){
+  const cell=clamp(Math.floor(avail/Wc),12,46);
+  ED._geo={mode:'2d',cell,cw:cell*Wc,ch:cell*Hc};
+ }else{
+  const pad=10;
+  // TW = 2 * (avail - 2*pad) / (Wc + Hc)
+  const TW2=clamp(Math.floor(2*(avail-pad*2)/(Wc+Hc)),16,68);
+  const TH2=TW2/2;
+  const THh=Math.max(6,Math.round(TH2*0.36));
+  const ox=(Hc-1)*TW2/2 + TW2/2 + pad;
+  const oy=pad;
+  const cw=ox + (Wc-1)*TW2/2 + TW2/2 + pad;
+  const chh=oy + (Wc+Hc-2)*TH2/2 + TH2/2 + THh + pad;
+  ED._geo={mode:'iso',TW:TW2,TH:TH2,TILE_H:THh,ox,oy,cw,ch:chh};
+ }
+}
+
+function edResize(){
+ if(!ED)return;
+ const L=ED.levels[ED.cur];if(!L||!L.tiles.length)return;
+ edComputeGeo();
+ const g=ED._geo;
+ const c=$('edc');
+ const dpr=Math.min(window.devicePixelRatio||1,2);
+ c.style.width=g.cw+'px';c.style.height=g.ch+'px';
+ c.width=Math.round(g.cw*dpr);c.height=Math.round(g.ch*dpr);
+ const ctx2=c.getContext('2d');
+ ctx2.setTransform(dpr,0,0,dpr,0,0);
+ edDraw();
+}
+
+/* ---------- 2D рисование ---------- */
+function edDraw2D(){
+ const L=ED.levels[ED.cur];
+ const Wc=L.tiles[0].length,Hc=L.tiles.length;
+ const g=ED._geo,s=g.cell;
+ const c=$('edc'),ctx2=c.getContext('2d');
+ ctx2.clearRect(0,0,Wc*s,Hc*s);
+ const BG={'.':'#082b1c','#':'#3fae74','G':'#f2fff7','B':'#ffd93d','P':'#38c6e8','L':'#e8618c','D':'#b83b4e'};
+ for(let y=0;y<Hc;y++){
+  for(let x=0;x<Wc;x++){
+   const ch=L.tiles[y][x]||'.';
+   ctx2.fillStyle=BG[ch]||BG['#'];
+   ctx2.fillRect(x*s,y*s,s,s);
+   if(ch!=='.'&&ch!=='#'){
+    ctx2.fillStyle=(ch==='G')?'#0b3324':(ch==='B'?'#3a2600':'#ffffff');
+    ctx2.font='900 '+Math.round(s*.52)+'px Nunito, sans-serif';
+    ctx2.textAlign='center';ctx2.textBaseline='middle';
+    ctx2.fillText(ch,x*s+s/2,y*s+s/2+1);
+   }
+  }
+ }
+ ctx2.strokeStyle='rgba(255,255,255,.10)';ctx2.lineWidth=1;
+ for(let x=0;x<=Wc;x++){ctx2.beginPath();ctx2.moveTo(x*s+.5,0);ctx2.lineTo(x*s+.5,Hc*s);ctx2.stroke()}
+ for(let y=0;y<=Hc;y++){ctx2.beginPath();ctx2.moveTo(0,y*s+.5);ctx2.lineTo(Wc*s,y*s+.5);ctx2.stroke()}
+ const sx=L.start[0],sy=L.start[1],sd=((L.start[2]|0)%4+4)%4;
+ if(sx>=0&&sy>=0&&sx<Wc&&sy<Hc){
+  const cx=sx*s+s/2,cy=sy*s+s/2;
+  ctx2.save();
+  ctx2.fillStyle='#3d8bff';ctx2.strokeStyle='#fff';ctx2.lineWidth=2;
+  ctx2.beginPath();ctx2.arc(cx,cy,s*.30,0,7);ctx2.fill();ctx2.stroke();
+  const dx=[1,0,-1,0][sd],dy=[0,1,0,-1][sd],px=-dy,py=dx;
+  ctx2.beginPath();
+  ctx2.moveTo(cx+dx*s*.34,cy+dy*s*.34);
+  ctx2.lineTo(cx-dx*s*.10+px*s*.15,cy-dy*s*.10+py*s*.15);
+  ctx2.lineTo(cx-dx*s*.10-px*s*.15,cy-dy*s*.10-py*s*.15);
+  ctx2.closePath();ctx2.fillStyle='#fff';ctx2.fill();
+  ctx2.restore();
+ }
+}
+
+/* ---------- 3D (изометрическое) рисование ---------- */
+const ED_TOP={
+ '.':{t:'#0c2e20',l:'#081f16',r:'#061810',flat:true},
+ '#':{t:'#7de8a8',l:'#4eb87c',r:'#3c9a63'},
+ 'G':{t:'#ffffff',l:'#cfe9d9',r:'#a5c9b5'},
+ 'B':{t:'#8be8a4',l:'#4eb87c',r:'#3c9a63'},
+ 'P':{t:'#8be8a4',l:'#4eb87c',r:'#3c9a63'},
+ 'L':{t:'#8be8a4',l:'#4eb87c',r:'#3c9a63'},
+ 'D':{t:'#d1495f',l:'#7d2537',r:'#5d1a29'}
+};
+function edDrawIso(){
+ const L=ED.levels[ED.cur];
+ const Wc=L.tiles[0].length,Hc=L.tiles.length;
+ const g=ED._geo,TW2=g.TW,TH2=g.TH,THh=g.TILE_H,ox=g.ox,oy=g.oy;
+ const c=$('edc'),ctx2=c.getContext('2d');
+ ctx2.clearRect(0,0,g.cw,g.ch);
+
+ // фон
+ const bgGrad=ctx2.createLinearGradient(0,0,0,g.ch);
+ bgGrad.addColorStop(0,'#082a1c');bgGrad.addColorStop(1,'#041a11');
+ ctx2.fillStyle=bgGrad;ctx2.fillRect(0,0,g.cw,g.ch);
+
+ const centerOf=(tx,ty)=>[ox+(tx-ty)*TW2/2, oy+(tx+ty)*TH2/2 + TH2/2];
+
+ // порядок отрисовки: сортируем по (tx+ty)
+ const order=[];
+ for(let ty=0;ty<Hc;ty++)for(let tx=0;tx<Wc;tx++)order.push([tx,ty]);
+ order.sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
+
+ for(const[tx,ty] of order){
+  const ch=L.tiles[ty][tx]||'.';
+  const[sx,sy]=centerOf(tx,ty);
+  const hw=TW2/2,hh=TH2/2;
+  const col=ED_TOP[ch]||ED_TOP['#'];
+
+  // верхняя грань
+  ctx2.beginPath();
+  ctx2.moveTo(sx,sy-hh);
+  ctx2.lineTo(sx+hw,sy);
+  ctx2.lineTo(sx,sy+hh);
+  ctx2.lineTo(sx-hw,sy);
+  ctx2.closePath();
+  ctx2.fillStyle=col.t;ctx2.fill();
+
+  // сетка/обводка
+  ctx2.strokeStyle=(ch==='.')?'rgba(120,200,160,.18)':'rgba(6,40,26,.55)';
+  ctx2.lineWidth=1;ctx2.stroke();
+
+  // стенки только для «плотных» клеток
+  if(!col.flat){
+   // левая стенка
+   ctx2.beginPath();
+   ctx2.moveTo(sx-hw,sy);
+   ctx2.lineTo(sx,sy+hh);
+   ctx2.lineTo(sx,sy+hh+THh);
+   ctx2.lineTo(sx-hw,sy+THh);
+   ctx2.closePath();
+   ctx2.fillStyle=col.l;ctx2.fill();
+   ctx2.strokeStyle='rgba(6,40,26,.45)';ctx2.stroke();
+   // правая стенка
+   ctx2.beginPath();
+   ctx2.moveTo(sx+hw,sy);
+   ctx2.lineTo(sx,sy+hh);
+   ctx2.lineTo(sx,sy+hh+THh);
+   ctx2.lineTo(sx+hw,sy+THh);
+   ctx2.closePath();
+   ctx2.fillStyle=col.r;ctx2.fill();
+   ctx2.strokeStyle='rgba(6,40,26,.45)';ctx2.stroke();
+  }
+
+  // иконки для специальных клеток
+  const iconY=sy - (col.flat?0:THh*0.05);
+  const s=TW2;
+  if(ch==='B'){
+   // батарейка
+   ctx2.save();ctx2.translate(sx,sy-2);
+   ctx2.fillStyle='#ffe135';ctx2.strokeStyle=INK;ctx2.lineWidth=Math.max(1.5,s*0.05);
+   const bw=s*0.22,bh=s*0.34;
+   ctx2.beginPath();ctx2.rect(-bw/2,-bh/2,bw,bh);ctx2.fill();ctx2.stroke();
+   ctx2.fillStyle=INK;
+   ctx2.beginPath();
+   ctx2.moveTo(bw*0.15,-bh*0.35);
+   ctx2.lineTo(-bw*0.15,-bh*0.05);
+   ctx2.lineTo(0,-bh*0.05);
+   ctx2.lineTo(-bw*0.05,bh*0.35);
+   ctx2.lineTo(bw*0.15,bh*0.05);
+   ctx2.lineTo(0,bh*0.05);
+   ctx2.closePath();ctx2.fill();
+   ctx2.fillStyle='#ffe135';ctx2.strokeStyle=INK;
+   ctx2.beginPath();ctx2.rect(-bw*0.28,-bh/2-s*0.04,bw*0.56,s*0.05);ctx2.fill();ctx2.stroke();
+   ctx2.restore();
+  } else if(ch==='P'){
+   // портал
+   ctx2.save();ctx2.translate(sx,sy-1);
+   ctx2.lineWidth=Math.max(1.5,s*0.05);ctx2.strokeStyle='#7ff0ff';
+   ctx2.beginPath();ctx2.ellipse(0,0,s*0.22,s*0.11,0,0,7);ctx2.stroke();
+   ctx2.fillStyle='#0a6b8a';
+   ctx2.beginPath();ctx2.ellipse(0,0,s*0.13,s*0.065,0,0,7);ctx2.fill();
+   ctx2.restore();
+  } else if(ch==='L'){
+   // рычаг
+   ctx2.save();ctx2.translate(sx,sy);
+   ctx2.strokeStyle=INK;ctx2.lineWidth=Math.max(1.6,s*0.055);ctx2.lineCap='round';
+   ctx2.beginPath();ctx2.moveTo(-s*0.1,s*0.08);ctx2.lineTo(s*0.06,-s*0.14);ctx2.stroke();
+   ctx2.fillStyle='#ff5d8f';
+   ctx2.beginPath();ctx2.arc(s*0.06,-s*0.14,s*0.07,0,7);ctx2.fill();
+   ctx2.strokeStyle=INK;ctx2.lineWidth=1.2;ctx2.stroke();
+   ctx2.restore();
+  } else if(ch==='G'){
+   // цель
+   ctx2.save();ctx2.translate(sx,sy);
+   const pulse=0.5+0.5*Math.sin(performance.now()/400+tx+ty);
+   ctx2.strokeStyle='#ff3d6e';ctx2.lineWidth=Math.max(1.5,s*0.05);
+   ctx2.beginPath();ctx2.ellipse(0,0,s*0.18+pulse*s*0.025,s*0.09+pulse*s*0.012,0,0,7);ctx2.stroke();
+   ctx2.fillStyle='#ff3d6e';
+   ctx2.beginPath();ctx2.ellipse(0,0,s*0.07,s*0.035,0,0,7);ctx2.fill();
+   ctx2.restore();
+  } else if(ch==='D'){
+   // дверь — крест-накрест
+   ctx2.save();ctx2.strokeStyle='#3a0f18';ctx2.lineWidth=Math.max(1.6,s*0.05);
+   ctx2.beginPath();
+   ctx2.moveTo(sx-s*0.12,sy-s*0.05);ctx2.lineTo(sx+s*0.12,sy+s*0.05);
+   ctx2.moveTo(sx-s*0.12,sy+s*0.05);ctx2.lineTo(sx+s*0.12,sy-s*0.05);
+   ctx2.stroke();ctx2.restore();
+  }
+ }
+
+ // маркер старта поверх всего
+ const sx=L.start[0],sy=L.start[1],sd=((L.start[2]|0)%4+4)%4;
+ if(sx>=0&&sy>=0&&sx<Wc&&sy<Hc){
+  const[cx,cy]=centerOf(sx,sy);
+  const d=sd*Math.PI/2,dx=[1,0,-1,0][sd],dy=[0,1,0,-1][sd];
+  // на изометрии направление стрелки: вправо/вниз/влево/вверх
+  const ex=dx*TW2/2 - dy*TW2/2;   // экранное смещение по X
+  const ey=(dx*TH2/2 + dy*TH2/2) * 1; // экранное смещение по Y
+  const len=Math.hypot(ex,ey)||1;
+  const ux=ex/len,uy=ey/len;
+  ctx2.save();
+  ctx2.fillStyle='#3d8bff';ctx2.strokeStyle='#fff';ctx2.lineWidth=Math.max(1.5,TW2*0.04);
+  ctx2.beginPath();ctx2.arc(cx,cy-1,TW2*0.17,0,7);ctx2.fill();ctx2.stroke();
+  const aLen=TW2*0.28,aw=TW2*0.1;
+  const tipx=cx+ux*aLen, tipy=cy-1+uy*aLen;
+  const bx=cx+ux*aLen*0.35, by=cy-1+uy*aLen*0.35;
+  const px=-uy,py=ux;
+  ctx2.beginPath();
+  ctx2.moveTo(tipx,tipy);
+  ctx2.lineTo(bx+px*aw,by+py*aw);
+  ctx2.lineTo(bx-px*aw,by-py*aw);
+  ctx2.closePath();
+  ctx2.fillStyle='#fff';ctx2.fill();
+  ctx2.restore();
+ }
+}
+
+function edDraw(){
+ if(!ED||!ED._geo)return;
+ if(ED._geo.mode==='2d')edDraw2D();
+ else edDrawIso();
+}
+
+/* ---------- попадание клика в клетку ---------- */
+function edPos(e){
+ const c=$('edc'),r=c.getBoundingClientRect();
+ const L=ED.levels[ED.cur];
+ const Wc=L.tiles[0].length,Hc=L.tiles.length;
+ if(!ED._geo)return[0,0];
+ const g=ED._geo;
+
+ if(g.mode==='2d'){
+  const x=Math.floor((e.clientX-r.left)/(r.width/Wc));
+  const y=Math.floor((e.clientY-r.top)/(r.height/Hc));
+  return[x,y];
+ }
+ // iso: переводим экранные координаты в изометрические индексы
+ const px=(e.clientX-r.left)*(g.cw/r.width);
+ const py=(e.clientY-r.top)*(g.ch/r.height);
+ const u=(px-g.ox)/(g.TW/2);
+ const v=(py-g.oy-g.TH/2)/(g.TH/2);
+ const tx=Math.floor((u+v)/2);
+ const ty=Math.floor((v-u)/2);
+ return[tx,ty];
+}
+
+function edPaintAt(x,y){
+ const L=ED.levels[ED.cur];
+ const Wc=L.tiles[0].length,Hc=L.tiles.length;
+ if(x<0||y<0||x>=Wc||y>=Hc)return false;
+ if(ED.tool==='S'){
+  if(L.start[0]===x&&L.start[1]===y){L.start[2]=((L.start[2]|0)+1)%4}
+  else{L.start[0]=x;L.start[1]=y}
+  $('edSX').textContent=L.start[0];
+  $('edSY').textContent=L.start[1];
+  ['edD0','edD1','edD2','edD3'].forEach((id,i)=>$(id).classList.toggle('on',(L.start[2]|0)===i));
+ }else{
+  const row=L.tiles[y].split('');
+  if(row[x]===ED.tool)return false;
+  row[x]=ED.tool;
+  L.tiles[y]=row.join('');
+ }
+ edDraw();edSave();
+ return true;
+}
+
+/* --- события canvas --- */
+(function(){
+ const c=$('edc');
+ c.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'&&e.button>0)return;
+  if(!ED)return;
+  e.preventDefault();
+  try{c.setPointerCapture(e.pointerId)}catch(err){}
+  edPainting=true;
+  const[x,y]=edPos(e);edPaintAt(x,y);
+ });
+ c.addEventListener('pointermove',e=>{
+  if(!edPainting||!ED)return;
+  const[x,y]=edPos(e);edPaintAt(x,y);
+ });
+ const up=()=>{edPainting=false};
+ c.addEventListener('pointerup',up);
+ c.addEventListener('pointercancel',up);
+ c.addEventListener('pointerleave',up);
+})();
+
+/* --- поля формы --- */
+$('edName').oninput=()=>{ED.levels[ED.cur].name=$('edName').value;edSave()};
+$('edHint').oninput=()=>{ED.levels[ED.cur].hint=$('edHint').value;edSave()};
+$('edMax').oninput=()=>{ED.levels[ED.cur].max=clamp(parseInt($('edMax').value)||1,1,60);edSave()};
+$('edNeed').oninput=()=>{ED.need[ED.cur]=clamp(parseInt($('edNeed').value)||0,0,9999);edSave()};
+$('edGroup').onchange=()=>{ED.levels[ED.cur].g=clamp(parseInt($('edGroup').value)||0,0,ED.groups.length-1);edSave()};
+['edD0','edD1','edD2','edD3'].forEach((id,i)=>{
+ $(id).onclick=()=>{ED.levels[ED.cur].start[2]=i;edSync();edSave()};
+});
+document.querySelectorAll('[data-wh]').forEach(b=>{
+ b.onclick=()=>{
+  const v=b.getAttribute('data-wh');
+  const dw=v[0]==='w'?(v[1]==='-'?-1:1):0;
+  const dh=v[0]==='h'?(v[1]==='-'?-1:1):0;
+  edResizeGrid(dw,dh);
+ };
+});
+function edResizeGrid(dw,dh){
+ const L=ED.levels[ED.cur];
+ const Wc=L.tiles[0].length,Hc=L.tiles.length;
+ const nw=clamp(Wc+dw,3,26),nh=clamp(Hc+dh,3,22);
+ if(nw===Wc&&nh===Hc)return;
+ const g=[];
+ for(let y=0;y<nh;y++){
+  let row='';
+  for(let x=0;x<nw;x++)row+=((y<Hc&&x<Wc)?L.tiles[y][x]:'.');
+  g.push(row);
+ }
+ L.tiles=g;
+ L.start[0]=clamp(L.start[0],0,nw-1);
+ L.start[1]=clamp(L.start[1],0,nh-1);
+ edSync();edSave();
+}
+
+/* --- управление уровнями --- */
+$('edPrev').onclick=()=>{if(ED.cur>0){ED.cur--;edSync()}};
+$('edNext').onclick=()=>{if(ED.cur<ED.levels.length-1){ED.cur++;edSync()}};
+$('edAdd').onclick=()=>{
+ const w=10,h=8;
+ const tiles=[];
+ for(let y=0;y<h;y++){
+  let row='';
+  for(let x=0;x<w;x++)row+=(y===0||y===h-1||x===0||x===w-1)?'#':'.';
+  tiles.push(row);
+ }
+ const g=ED.levels.length?clamp(ED.levels[ED.levels.length-1].g|0,0,ED.groups.length-1):0;
+ ED.levels.push({name:'Новый уровень',g,hint:'',use:['fwd','left','right'],tiles,start:[1,1,0],max:10});
+ ED.need.push(ED.need.length?(ED.need[ED.need.length-1]|0):0);
+ ED.cur=ED.levels.length-1;
+ edSync();edSave();
+};
+$('edDup').onclick=()=>{
+ const L=ED.levels[ED.cur];
+ const c=JSON.parse(JSON.stringify(L));
+ c.name=(L.name||'Уровень')+' (копия)';
+ ED.levels.splice(ED.cur+1,0,c);
+ ED.need.splice(ED.cur+1,0,ED.need[ED.cur]|0);
+ ED.cur++;
+ edSync();edSave();
+};
+$('edDel').onclick=()=>{
+ if(ED.levels.length<=1){toast('Нельзя удалить последний уровень');return}
+ if(!confirm('Удалить уровень «'+(ED.levels[ED.cur].name||'')+'»?'))return;
+ ED.levels.splice(ED.cur,1);
+ ED.need.splice(ED.cur,1);
+ ED.cur=clamp(ED.cur,0,ED.levels.length-1);
+ edSync();edSave();
+};
+$('edRevert').onclick=()=>{
+ if(!confirm('Сбросить все правки редактора и вернуть встроенные уровни?'))return;
+ try{localStorage.removeItem(ED_KEY)}catch(e){}
+ ED={levels:ORIG.levels.map(L=>JSON.parse(JSON.stringify(L))),
+     groups:ORIG.groups.map(g=>({t:g.t})),
+     need:ORIG.need.slice(),cur:0,tool:'.',view:'iso'};
+ edSync();edSave();
+ toast('Редактор сброшен к встроенным уровням');
+};
+$('edBack').onclick=()=>show('menu');
+$('edGroups').onclick=()=>{
+ $('grpTa').value=ED.groups.map(g=>g.t).join('\n');
+ $('grp').classList.add('show');
+};
+$('grpCancel').onclick=()=>$('grp').classList.remove('show');
+$('grpOk').onclick=()=>{
+ const lines=$('grpTa').value.split('\n').map(s=>s.trim()).filter(s=>s.length);
+ if(!lines.length){toast('Нужен хотя бы один раздел');return}
+ ED.groups=lines.map(t=>({t}));
+ ED.levels.forEach(L=>{L.g=clamp(L.g|0,0,lines.length-1)});
+ $('grp').classList.remove('show');
+ edSync();edSave();
+};
+
+/* --- применение --- */
+function edGroupsOut(){
+ const gs=ED.groups.map(g=>({t:g.t,n:0}));
+ ED.levels.forEach(L=>{const i=clamp(L.g|0,0,gs.length-1);gs[i].n++});
+ return gs;
+}
+function edChaptersOut(gs){
+ const ch=[{t:'Раздел 1. История о роботе',g:[0,1,2]},
+           {t:'Раздел 2. Новое приключение',g:[3,4,5]},
+           {t:'Раздел 3. Дорога домой',g:[6]}];
+ const cov=new Set();ch.forEach(c=>c.g.forEach(i=>cov.add(i)));
+ for(let i=0;i<gs.length;i++)if(!cov.has(i))ch[ch.length-1].g.push(i);
+ ch.forEach(c=>{c.g=c.g.filter(i=>i<gs.length)});
+ return ch.filter(c=>c.g.length);
+}
+function applyEd(){
+ const gs=edGroupsOut();
+ LEVELS=ED.levels.map(L=>({
+  name:L.name||'Уровень',
+  g:clamp(L.g|0,0,gs.length-1),
+  hint:L.hint||'',
+  use:(L.use&&L.use.length?L.use:['fwd']).slice(),
+  tiles:L.tiles.slice(),
+  start:L.start.slice(),
+  max:clamp(L.max|0,1,60)||10
+ }));
+ GROUPS=gs;
+ NEED=ED.levels.map((_,i)=>clamp(ED.need[i]|0,0,9999));
+ CHAPTERS=edChaptersOut(gs);
+ Object.keys(save.b).forEach(k=>{if(+k>=LEVELS.length)delete save.b[k]});
+ persist();
+ if(cur>=LEVELS.length)cur=0;
+}
+$('edApply').onclick=()=>{
+ applyEd();
+ toast('Уровни применены в этой сессии! Не забудь экспортировать код.');
+ show('lv');
+};
+$('edTest').onclick=()=>{
+ applyEd();
+ const i=clamp(ED.cur,0,LEVELS.length-1);
+ show('game');
+ loadLevel(i);
+};
+
+/* --- предупреждения --- */
+function edWarnings(){
+ const w=[];
+ ED.levels.forEach((L,i)=>{
+  const s=(L.tiles||[]).join('');
+  if(!s.length){w.push('Ур.'+(i+1)+': пустая сетка');return}
+  if(s.indexOf('G')<0)w.push('Ур.'+(i+1)+': нет цели (G)');
+  const p=(s.match(/P/g)||[]).length;
+  if(p%2)w.push('Ур.'+(i+1)+': нечётное число порталов ('+p+') — телепорт не сработает');
+  if(!L.use||!L.use.length)w.push('Ур.'+(i+1)+': не выбрано ни одной команды');
+  const wdt=L.tiles[0].length;
+  if(L.tiles.some(t=>t.length!==wdt))w.push('Ур.'+(i+1)+': строки разной длины');
+  const st=L.start;
+  if(!(st[0]>=0&&st[1]>=0&&st[0]<wdt&&st[1]<L.tiles.length))w.push('Ур.'+(i+1)+': старт вне сетки');
+ });
+ return w;
+}
+
+/* --- генерация экспорта --- */
+function genJS(){
+ const gs=edGroupsOut(),ch=edChaptersOut(gs),q=JSON.stringify;
+ let s='/* ===== НАЧАЛО БЛОКА: замени им CHAPTERS / GROUPS / NEED / LEVELS в test.html ===== */\n';
+ s+='const CHAPTERS=[\n';
+ ch.forEach((c,i)=>{s+=' {t:'+q(c.t)+',g:['+c.g.join(',')+']}'+(i<ch.length-1?',':'')+'\n'});
+ s+='];\n\n';
+ s+='const GROUPS=[\n';
+ gs.forEach((g,i)=>{s+=' {t:'+q(g.t)+',n:'+g.n+'}'+(i<gs.length-1?',':'')+'\n'});
+ s+='];\n\n';
+ s+='const NEED=['+ED.levels.map((_,i)=>clamp(ED.need[i]|0,0,9999)).join(',')+'];\n\n';
+ s+='const LEVELS=[\n';
+ ED.levels.forEach((L,i)=>{
+  s+='{name:'+q(L.name||'')+',g:'+clamp(L.g|0,0,gs.length-1)+',hint:'+q(L.hint||'')+
+     ',use:['+(L.use||['fwd']).map(u=>q(u)).join(',')+']'+
+     ',tiles:['+L.tiles.map(t=>q(t)).join(',')+']'+
+     ',start:['+L.start.join(',')+'],max:'+L.max+'}'+(i<ED.levels.length-1?',':'')+'\n';
+ });
+ s+='];\n/* ===== КОНЕЦ БЛОКА ===== */\n';
+ return s;
+}
+function genJSON(){
+ const gs=edGroupsOut();
+ return JSON.stringify({
+  chapters:edChaptersOut(gs),
+  groups:gs,
+  need:ED.levels.map((_,i)=>clamp(ED.need[i]|0,0,9999)),
+  levels:ED.levels
+ },null,1);
+}
+
+let expMode='js';
+function edShowExport(){
+ $('expTa').value=(expMode==='js')?genJS():genJSON();
+ $('expModeJs').classList.toggle('go',expMode==='js');
+ $('expModeJson').classList.toggle('go',expMode==='json');
+ $('expMsg').textContent=(expMode==='js')
+  ?'Скопируй код и замени им блоки CHAPTERS / GROUPS / NEED / LEVELS в test.html'
+  :'JSON сохрани файлом — его можно загрузить обратно кнопкой «Импорт»';
+ const w=edWarnings();
+ $('expWarn').innerHTML=w.length?('⚠ '+w.slice(0,12).join('<br>⚠ ')+(w.length>12?'<br>…':'')):'';
+ $('exp').classList.add('show');
+}
+$('edExport').onclick=()=>{expMode='js';edShowExport()};
+$('expModeJs').onclick=()=>{expMode='js';edShowExport()};
+$('expModeJson').onclick=()=>{expMode='json';edShowExport()};
+$('expClose').onclick=()=>$('exp').classList.remove('show');
+$('expCopy').onclick=async()=>{
+ const ta=$('expTa');
+ try{await navigator.clipboard.writeText(ta.value);toast('Скопировано в буфер обмена')}
+ catch(e){ta.removeAttribute('readonly');ta.select();try{document.execCommand('copy')}catch(e2){}ta.setAttribute('readonly','');toast('Скопировано')}
+};
+$('expDl').onclick=()=>{
+ try{
+  const blob=new Blob([$('expTa').value],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(expMode==='js')?'levels_block.js':'levels.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+ }catch(e){toast('Не удалось скачать файл')}
+};
+
+/* --- импорт --- */
+$('edImport').onclick=()=>{$('impTa').value='';$('imp').classList.add('show')};
+$('impCancel').onclick=()=>$('imp').classList.remove('show');
+$('impOk').onclick=()=>{
+ let d;
+ try{d=JSON.parse($('impTa').value)}
+ catch(e){toast('Ошибка JSON: '+e.message);return}
+ let lv=null,gs=null,nd=null;
+ if(Array.isArray(d))lv=d;
+ else if(d&&Array.isArray(d.levels)){lv=d.levels;gs=d.groups;nd=d.need}
+ else{toast('Не найден массив levels');return}
+ if(!lv.length){toast('Список уровней пуст');return}
+ const norm=lv.map(L=>{
+  const tiles=(Array.isArray(L.tiles)&&L.tiles.length)?L.tiles.map(String):['#####','#.G.#','#####'];
+  const wmax=Math.max.apply(null,tiles.map(t=>t.length));
+  const tt=tiles.map(t=>t.length<wmax?t+'.'.repeat(wmax-t.length):t);
+  const st=(Array.isArray(L.start)&&L.start.length===3)?L.start.map(Number):[1,1,0];
+  st[0]=clamp(st[0]|0,0,Math.max(0,wmax-1));
+  st[1]=clamp(st[1]|0,0,Math.max(0,tt.length-1));
+  st[2]=((st[2]|0)%4+4)%4;
+  const use=(Array.isArray(L.use)&&L.use.length)?L.use.filter(u=>ALL_CMDS.indexOf(u)>=0):['fwd','left','right'];
+  return {
+   name:String(L.name||'Уровень'),
+   g:clamp(L.g|0,0,99),
+   hint:String(L.hint||''),
+   use:use.length?use:['fwd','left','right'],
+   tiles:tt,
+   start:st,
+   max:clamp(L.max|0,1,60)||10
+  };
+ });
+ ED.levels=norm;
+ ED.cur=0;
+ if(gs&&gs.length){
+  ED.groups=gs.map((g,i)=>({t:String((g&&g.t)||('Раздел '+(i+1)))}));
+  ED.levels.forEach(L=>{L.g=clamp(L.g,0,ED.groups.length-1)});
+ }else{
+  ED.levels.forEach(L=>{L.g=clamp(L.g,0,Math.max(0,ED.groups.length-1))});
+ }
+ if(nd&&nd.length){
+  ED.need=norm.map((_,i)=>clamp(nd[i]|0,0,9999));
+ }else{
+  ED.need=norm.map(()=>0);
+ }
+ $('imp').classList.remove('show');
+ edSync();edSave();
+ toast('Импортировано уровней: '+norm.length);
+};
+
+/* --- resize --- */
+addEventListener('resize',()=>{
+ resize();
+ if(ED&&!$('ed').classList.contains('hide'))edResize();
+});
+
+/* ---------- настройки ---------- */
+const closeSet=()=>$('set').classList.remove('show');
+const closePw=()=>{$('pw').classList.remove('show');$('pwIn').value='';$('pwIn').style.borderColor=''};
+$('setBtn').onclick=()=>$('set').classList.add('show');
+$('setBtn2').onclick=()=>$('set').classList.add('show');
+$('sClose').onclick=closeSet;
+$('sReset').onclick=()=>{
+ if(!confirm('Сбросить ВЕСЬ прогресс?\nВсе батарейки и открытые уровни будут потеряны.'))return;
+ save={b:{}};persist();
+ $('mb').textContent=total();$('lb2').textContent=total();
+ closeSet();
+ if(!$('lv').classList.contains('hide'))buildLevels();
+};
+
+let pwMode='unlock';
+function openPw(mode){
+ pwMode=mode;
+ $('pwT').textContent=(mode==='admin')?'🛠 Админ-доступ':'🔐 Пароль';
+ $('pwP').textContent=(mode==='admin')
+  ?'Введите админ-пароль для входа в редактор уровней'
+  :'Введите пароль для открытия всех уровней';
+ $('pwIn').value='';$('pwIn').style.borderColor='';
+ $('pw').classList.add('show');
+ setTimeout(()=>$('pwIn').focus(),250);
+}
+$('sUnlock').onclick=()=>{closeSet();openPw('unlock')};
+$('sEditor').onclick=()=>{closeSet();openPw('admin')};
+$('pwCancel').onclick=closePw;
+$('pwOk').onclick=()=>{
+ const v=$('pwIn').value.trim().toLowerCase();
+ const ok=(pwMode==='admin')?(v===ADMIN_PW):(v==='adele');
+ if(ok){
+  if(pwMode==='admin'){
+   closePw();
+   openEditor();
+  }else{
+   save.all=true;persist();
+   closePw();
+   if(!$('lv').classList.contains('hide'))buildLevels();
+   toast('Все уровни открыты');
+  }
+ }else{
+  $('pwIn').style.borderColor='#ff3d6e';
+  $('pwIn').animate([{transform:'translateX(0)'},{transform:'translateX(-7px)'},{transform:'translateX(7px)'},{transform:'translateX(0)'}],{duration:280});
+  setTimeout(()=>$('pwIn').style.borderColor='',700);
+ }
+};
+$('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('pwOk').click()}});
+$('set').addEventListener('click',e=>{if(e.target===$('set'))closeSet()});
+$('pw').addEventListener('click',e=>{if(e.target===$('pw'))closePw()});
+$('exp').addEventListener('click',e=>{if(e.target===$('exp'))$('exp').classList.remove('show')});
+$('imp').addEventListener('click',e=>{if(e.target===$('imp'))$('imp').classList.remove('show')});
+$('grp').addEventListener('click',e=>{if(e.target===$('grp'))$('grp').classList.remove('show')});
+
 addEventListener('keydown',e=>{
  if($('game').classList.contains('hide')||e.repeat)return;
  const k=e.key;
@@ -436,9 +1526,8 @@ addEventListener('keydown',e=>{
  else if('rRкК'.includes(k)&&k.length===1)$('rst').click();
  else if(k.length===1&&+k>=1&&useList[+k-1])addCmd(useList[+k-1]);
 });
-addEventListener('resize',resize);
 
-/* ---------- отрисовка ---------- */
+/* ---------- отрисовка игры ---------- */
 function poly(pts,fill){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill()}
 function rr(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 
@@ -451,6 +1540,28 @@ function drawTile(x,y){
  poly([[cx+hw,cy],[cx,cy+hh],[cx,cy+hh+TILE_H],[cx+hw,cy+TILE_H]],r);
  poly([[cx,cy-hh],[cx+hw,cy],[cx,cy+hh],[cx-hw,cy]],t);
  ctx.strokeStyle='rgba(6,50,32,.6)';ctx.lineWidth=1.5;ctx.stroke();
+
+ if(c.door){
+  const k=c.open?clamp((T-c.openAt)*2.2,0,1):0;
+  if(k<1){
+   ctx.save();ctx.globalAlpha=1-k;
+   poly([[cx-hw,cy],[cx,cy+hh],[cx,cy+hh+TILE_H],[cx-hw,cy+TILE_H]],'#7d2537');
+   poly([[cx+hw,cy],[cx,cy+hh],[cx,cy+hh+TILE_H],[cx+hw,cy+TILE_H]],'#5d1a29');
+   poly([[cx,cy-hh],[cx+hw,cy],[cx,cy+hh],[cx-hw,cy]],'#d1495f');
+   ctx.strokeStyle='#3a0f18';ctx.lineWidth=1.5;ctx.stroke();
+   ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-7,cy-3);ctx.lineTo(cx+7,cy+3);ctx.stroke();
+   ctx.beginPath();ctx.moveTo(cx-7,cy+3);ctx.lineTo(cx+7,cy-3);ctx.stroke();
+   ctx.restore();
+  }
+ }
+ if(c.lever){
+  ctx.save();ctx.lineCap='round';ctx.strokeStyle=INK;ctx.lineWidth=3.5;
+  const tilt=c.pulled?-.9:.7;
+  ctx.beginPath();ctx.moveTo(cx-6,cy+5);ctx.lineTo(cx+6*Math.cos(tilt),cy+5-11*Math.sin(tilt+1.2));ctx.stroke();
+  ctx.fillStyle=c.pulled?'#2fd06f':'#ff5d8f';
+  ctx.beginPath();ctx.arc(cx+6*Math.cos(tilt),cy+5-11*Math.sin(tilt+1.2),4.4,0,7);ctx.fill();
+  ctx.lineWidth=2;ctx.strokeStyle=INK;ctx.stroke();ctx.restore();
+ }
  if(c.type===2){
   const pulse=.5+.5*Math.sin(T*3+x+y);
   ctx.save();ctx.lineWidth=3.5;
@@ -463,9 +1574,14 @@ function drawTile(x,y){
   }
   ctx.restore();
  }
- if(c.portal){ctx.save();ctx.lineWidth=3;ctx.strokeStyle='#7ff0ff';for(let j=0;j<2;j++){const p=(T*.9+j*.5)%1;ctx.globalAlpha=1-p;ctx.beginPath();ctx.ellipse(cx,cy,6+p*11,3+p*5.5,0,0,7);ctx.stroke()}
+ if(c.portal){
+  ctx.save();ctx.lineWidth=3;ctx.strokeStyle='#7ff0ff';
+  for(let j=0;j<2;j++){const p=(T*.9+j*.5)%1;ctx.globalAlpha=1-p;ctx.beginPath();ctx.ellipse(cx,cy,6+p*11,3+p*5.5,0,0,7);ctx.stroke()}
   ctx.globalAlpha=1;ctx.fillStyle='#0a6b8a';ctx.beginPath();ctx.ellipse(cx,cy,7,3.5,0,0,7);ctx.fill();
-  const w=clamp(1-(T-c.wAt)*2,0,1);if(w>0){ctx.globalAlpha=w;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(cx,cy,18*(1-w)+6,9*(1-w)+3,0,0,7);ctx.fill()}ctx.restore()}
+  const w=clamp(1-(T-c.wAt)*2,0,1);
+  if(w>0){ctx.globalAlpha=w;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(cx,cy,18*(1-w)+6,9*(1-w)+3,0,0,7);ctx.fill()}
+  ctx.restore();
+ }
  if(c.bat){
   const k=c.got?clamp((T-c.gotAt)*2.2,0,1):0;
   if(k<1)drawBattery(cx,cy-2-k*30+Math.sin(T*3+x)*(c.got?0:2),1-k,1+k*.4);
@@ -485,11 +1601,10 @@ function drawBattery(x,y,a,s){
 function drawRobot(){
  const[sx,cy]=tileScreen(robot.px,robot.py),gy=cy+3,bob=Math.sin(T*2.4)*1.2,lift=robot.hop;
  const d=robot.pdir*Math.PI/2,gx_=Math.cos(d),gy_=Math.sin(d);
- const fx=gx_-gy_,fy=(gx_+gy_)*.5;           // куда смотрит робот на экране
- const face=clamp(.5+fy*3,0,1);              // 1 — лицом к нам, 0 — спиной
+ const fx=gx_-gy_,fy=(gx_+gy_)*.5;
+ const face=clamp(.5+fy*3,0,1);
  const sh=1-clamp(lift/60,0,.5);
  ctx.save();ctx.globalAlpha=.32*sh;ctx.fillStyle='#000';ctx.beginPath();ctx.ellipse(sx,gy,16*sh,7.5*sh,0,0,7);ctx.fill();ctx.restore();
- // стрелка направления на плитке
  const P=(a,b)=>{const c=Math.cos(d),s=Math.sin(d),u=a*c-b*s,v=a*s+b*c;return[sx+(u-v)*TW/2,gy+(u+v)*TH/2]};
  const A=[P(.5,0),P(.12,-.3),P(.12,.3)];
  ctx.save();ctx.lineJoin='round';ctx.lineWidth=7;ctx.strokeStyle='#fff';
@@ -499,32 +1614,23 @@ function drawRobot(){
  ctx.save();ctx.translate(sx+robot.shake,gy-lift+bob);ctx.scale(1.15,1.15);
  ctx.lineWidth=3;ctx.strokeStyle=INK;ctx.lineJoin='round';
  const ex=clamp(fx,-1,1);
- // ноги
  ctx.fillStyle='#ffb020';rr(-9,-8,7,8,3);ctx.fill();ctx.stroke();rr(2,-8,7,8,3);ctx.fill();ctx.stroke();
- // руки (со стороны взгляда рука чуть выдвинута)
  ctx.fillStyle='#ffb020';
  rr(-19+ex*-1.5,-28,7,15,3.5);ctx.fill();ctx.stroke();rr(12+ex*-1.5,-28,7,15,3.5);ctx.fill();ctx.stroke();
- // корпус
  ctx.fillStyle='#ffffff';rr(-13,-38,26,32,11);ctx.fill();ctx.stroke();
- // грудь: спереди — индикатор, сзади — рюкзак с вентиляцией
  ctx.save();ctx.globalAlpha=face;ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.arc(ex*3,-24,4.5,0,7);ctx.fill();ctx.stroke();ctx.restore();
  ctx.save();ctx.globalAlpha=1-face;ctx.fillStyle='#ffb020';rr(-8,-34,16,20,5);ctx.fill();ctx.stroke();
  ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<3;i++){ctx.moveTo(-4,-30+i*5);ctx.lineTo(4,-30+i*5)}ctx.stroke();ctx.restore();
- // голова
  ctx.lineWidth=3;ctx.fillStyle='#ffffff';rr(-13,-62,26,24,10);ctx.fill();ctx.stroke();
- // лицо-визор
  ctx.save();ctx.globalAlpha=face;
  ctx.fillStyle=INK;rr(-10+ex*2.5,-58,20,15,6);ctx.fill();
  ctx.fillStyle='#00e5ff';const bl=Math.sin(T*1.3)>.97?.3:1;
  ctx.beginPath();ctx.ellipse(-4+ex*4,-50.5,2.6,3*bl,0,0,7);ctx.fill();
  ctx.beginPath();ctx.ellipse(4+ex*4,-50.5,2.6,3*bl,0,0,7);ctx.fill();
  ctx.restore();
- // затылок
  ctx.save();ctx.globalAlpha=1-face;ctx.fillStyle='#ffb020';rr(-9,-58,18,14,5);ctx.fill();ctx.lineWidth=2;ctx.stroke();ctx.restore();
- // «ушко» со стороны взгляда — понятно, куда повёрнут
  ctx.lineWidth=3;ctx.fillStyle='#ff5d8f';
  rr(ex>=0?12:-16,-54,4,10,2);ctx.fill();ctx.stroke();
- // антенна
  ctx.beginPath();ctx.moveTo(0,-62);ctx.lineTo(0,-69);ctx.stroke();
  ctx.fillStyle='#ffe135';ctx.beginPath();ctx.arc(0,-72,4.2,0,7);ctx.fill();ctx.stroke();
  ctx.restore();
@@ -545,7 +1651,7 @@ function render(now){
  ctx.restore();
 }
 
-/* ---------- старт: лоадер логотипа ---------- */
+/* ---------- старт ---------- */
 (function boot(){
  const img=$('llogo'),t0=performance.now();
  let done=false,pr=0;
